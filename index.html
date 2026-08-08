@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPHAZONK.FUN</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #ffffff;
+            color: #111111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 60px 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .author {
+            color: #111;
+            font-weight: 700;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+            max-width: 1050px;
+            width: 100%;
+        }
+
+        .card {
+            aspect-ratio: 16 / 7;
+            border-radius: 16px;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+            border: 2px solid #000;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+        }
+
+        .card-label {
+            background: #ffffff;
+            color: #000000;
+            padding: 6px 18px;
+            font-size: 1.35rem;
+            font-weight: 800;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            z-index: 5;
+            text-align: center;
+        }
+
+        .card-text-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            z-index: 5;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        /* CARD STYLES */
+        .card-sly {
+            background: linear-gradient(135deg, #ff0055, #ff416c);
+            color: #fff;
+        }
+
+        .card-deep-sea {
+            background: linear-gradient(180deg, #95d5e2 0%, #1e5a7e 100%);
+            color: #ffffff;
+        }
+
+        .card-space {
+            background: #020208;
+            color: #ffffff;
+        }
+
+        .card-share {
+            background: repeating-linear-gradient(
+                45deg,
+                #8de4d3,
+                #8de4d3 20px,
+                #fdbb8d 20px,
+                #fdbb8d 40px,
+                #a7b5fe 40px,
+                #a7b5fe 60px,
+                #ff9ebb 60px,
+                #ff9ebb 80px
+            );
+        }
+
+        .card-dark-patterns {
+            background: #080808;
+            color: #ff3344;
+        }
+
+        .card-who-alive {
+            background: #e6e0d3;
+        }
+
+        .card-day-go {
+            background: linear-gradient(90deg, #5aeec8, #9ca1ff, #ffe391);
+        }
+
+        .card-checklist {
+            background: #abf1cf;
+        }
+
+        .card-speed {
+            background: #f1f3f5;
+            background-image: linear-gradient(0deg, #e2e8f0 2px, transparent 2px);
+            background-size: 100% 12px;
+        }
+
+        .card-paper {
+            background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+
+        .card-draw-logos {
+            background: #f8fafc;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            color: #111;
+        }
+
+        .card-progress {
+            background: #ffffff;
+            position: relative;
+        }
+
+        .card-progress .bar-bg {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            opacity: 0.85;
+            z-index: 1;
+        }
+
+        .card-progress .bar {
+            height: 22%;
+            background: #20c997;
+        }
+
+        .card-gates {
+            background: #22c55e;
+            color: #ffffff;
+        }
+
+        .card-baby-map {
+            background: #e0f2fe;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">ALPHAZONK<span style="font-weight:300;">.FUN</span></div>
+        <div class="subtitle">games and stuff by <span class="author">AlphaZonk</span></div>
+    </header>
+
+    <main class="grid-container">
+
+        <!-- 1. Sly Clicker (WORKING LINK) -->
+        <a href="sly-clicker.html" class="card card-sly">
+            <div class="card-text-title">SLY CLICKER</div>
+        </a>
+
+        <!-- 2. The Deep Sea -->
+        <a onclick="alert('This game is under construction!')" class="card card-deep-sea">
+            <div class="card-text-title">The Deep Sea</div>
+        </a>
+
+        <!-- 3. The Size of Space -->
+        <a onclick="alert('This game is under construction!')" class="card card-space">
+            <div class="card-text-title">👨‍🚀 The Size of Space</div>
+        </a>
+
+        <!-- 4. Share This Page -->
+        <a onclick="alert('This game is under construction!')" class="card card-share">
+            <div class="card-label">Share this page</div>
+        </a>
+
+        <!-- 5. Dark Patterns -->
+        <a onclick="alert('This game is under construction!')" class="card card-dark-patterns">
+            <div class="card-text-title">👁️ Dark Patterns 👁️</div>
+        </a>
+
+        <!-- 6. Who Was Alive? -->
+        <a onclick="alert('This game is under construction!')" class="card card-who-alive">
+            <div class="card-label">Who Was Alive?</div>
+        </a>
+
+        <!-- 7. Where does the day go? -->
+        <a onclick="alert('This game is under construction!')" class="card card-day-go">
+            <div class="card-label">Where does the day go?</div>
+        </a>
+
+        <!-- 8. Life Checklist -->
+        <a onclick="alert('This game is under construction!')" class="card card-checklist">
+            <div class="card-label">Life Checklist</div>
+        </a>
+
+        <!-- 9. Speed -->
+        <a onclick="alert('This game is under construction!')" class="card card-speed">
+            <div class="card-label">Speed</div>
+        </a>
+
+        <!-- 10. Paper -->
+        <a onclick="alert('This game is under construction!')" class="card card-paper">
+            <div class="card-text-title" style="font-size:2.2rem; color:#1e293b;">Paper</div>
+        </a>
+
+        <!-- 11. Draw Logos -->
+        <a onclick="alert('This game is under construction!')" class="card card-draw-logos">
+            <div class="card-text-title" style="font-size: 1.5rem;">〽️ DRAW LOGOS<br>FROM MEMORY</div>
+        </a>
+
+        <!-- 12. Progress -->
+        <a onclick="alert('This game is under construction!')" class="card card-progress">
+            <div class="bar-bg">
+                <div class="bar" style="width: 40%;"></div>
+                <div class="bar" style="width: 80%;"></div>
+                <div class="bar" style="width: 55%;"></div>
+            </div>
+            <div class="card-label">Progress</div>
+        </a>
+
+        <!-- 13. Spend Bill Gates' Money -->
+        <a onclick="alert('This game is under construction!')" class="card card-gates">
+            <div class="card-text-title" style="font-size: 1.4rem;">💸 SPEND BILL<br>GATES' MONEY</div>
+        </a>
+
+        <!-- 14. Baby Map -->
+        <a onclick="alert('This game is under construction!')" class="card card-baby-map">
+            <div class="card-label">Baby Map</div>
+        </a>
+
+    </main>
+
+</body>
+</html>
