@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw Logos From Memory - AlphaZonk.fun</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .game-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 600px;
+            width: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .prompt-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* CANVAS AREA */
+        .canvas-container {
+            position: relative;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff;
+            cursor: crosshair;
+        }
+
+        canvas {
+            display: block;
+            touch-action: none;
+        }
+
+        /* PALETTE & CONTROLS */
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .colors {
+            display: flex;
+            gap: 8px;
+        }
+
+        .color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.1s ease;
+        }
+
+        .color-dot.active {
+            border-color: #000;
+            transform: scale(1.15);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-clear {
+            background: #f1f3f5;
+            color: #475569;
+        }
+
+        .btn-submit {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-next {
+            background: #16a34a;
+            color: #ffffff;
+            display: none;
+        }
+
+        /* REVEAL AREA */
+        .reveal-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+            border-top: 2px dashed #e2e8f0;
+            padding-top: 20px;
+        }
+
+        .reveal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .real-logo-img {
+            max-width: 200px;
+            max-height: 120px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn">← Back to AlphaZonk.fun</a>
+        <h1>Draw Logos From Memory</h1>
+    </header>
+
+    <div class="game-card">
+        <div class="prompt-title" id="logo-prompt">Draw McDonald's</div>
+
+        <div class="canvas-container">
+            <canvas id="drawCanvas" width="500" height="300"></canvas>
+        </div>
+
+        <div class="controls">
+            <div class="colors" id="colorPicker">
+                <div class="color-dot active" style="background: #000000;" data-color="#000000"></div>
+                <div class="color-dot" style="background: #ff0000;" data-color="#ff0000"></div>
+                <div class="color-dot" style="background: #ffcc00;" data-color="#ffcc00"></div>
+                <div class="color-dot" style="background: #0066ff;" data-color="#0066ff"></div>
+                <div class="color-dot" style="background: #009933;" data-color="#009933"></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-clear" id="clearBtn">Clear</button>
+                <button class="btn btn-submit" id="submitBtn">Reveal</button>
+                <button class="btn btn-next" id="nextBtn">Next Logo →</button>
+            </div>
+        </div>
+
+        <div class="reveal-section" id="revealSection">
+            <div class="reveal-title">Actual Logo:</div>
+            <img id="realLogo" class="real-logo-img" src="" alt="Real Logo">
+        </div>
+    </div>
+
+    <script>
+        const logos = [
+            { name: "McDonald's", url: "https://upload.wikimedia.org/wikipedia/commons/3/36/McDonald%27s_Golden_Arches.svg" },
+            { name: "Apple", url: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" },
+            { name: "Nike", url: "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" },
+            { name: "Pepsi", url: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Pepsi_logo_2014.svg" },
+            { name: "Starbucks", url: "https://upload.wikimedia.org/wikipedia/en/d/d3/Starbucks_Corporation_Logo_2011.svg" }
+        ];
+
+        let currentIndex = 0;
+        let isDrawing = false;
+        let currentColor = '#000000';
+
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        const promptEl = document.getElementById('logo-prompt');
+        const revealSection = document.getElementById('revealSection');
+        const realLogo = document.getElementById('realLogo');
+        const submitBtn = document.getElementById('submitBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // DRAWING LOGIC
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+            ctx.strokeStyle = currentColor;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // COLORS
+        document.getElementById('colorPicker').addEventListener('click', (e) => {
+            if (e.target.classList.contains('color-dot')) {
+                document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+                e.target.classList.add('active');
+                currentColor = e.target.getAttribute('data-color');
+            }
+        });
+
+        // CLEAR
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // REVEAL
+        submitBtn.addEventListener('click', () => {
+            realLogo.src = logos[currentIndex].url;
+            revealSection.style.display = 'flex';
+            submitBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+        });
+
+        // NEXT LOGO
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % logos.length;
+            promptEl.innerText = `Draw ${logos[currentIndex].name}`;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            revealSection.style.display = 'none';
+            submitBtn.style.display = 'inline-block';
+            nextBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
