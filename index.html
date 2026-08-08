@@ -22,6 +22,7 @@
             min-height: 100vh;
         }
 
+        /* HEADER */
         header {
             text-align: center;
             margin-bottom: 45px;
@@ -45,6 +46,7 @@
             font-weight: 700;
         }
 
+        /* GRID LAYOUT */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -53,6 +55,7 @@
             width: 100%;
         }
 
+        /* CARD BASE STYLE */
         .card {
             aspect-ratio: 16 / 7;
             border-radius: 16px;
@@ -73,6 +76,7 @@
             box-shadow: 0 12px 28px rgba(0,0,0,0.15);
         }
 
+        /* WHITE TITLE LABEL INSIDE CARD */
         .card-label {
             background: #ffffff;
             color: #000000;
@@ -84,6 +88,7 @@
             text-align: center;
         }
 
+        /* DIRECT TEXT TITLE */
         .card-text-title {
             font-size: 1.8rem;
             font-weight: 900;
@@ -92,22 +97,27 @@
             letter-spacing: -0.5px;
         }
 
-        /* CARD STYLES */
+        /* ==================== INDIVIDUAL CARD DESIGNS ==================== */
+
+        /* 1. SLY CLICKER */
         .card-sly {
             background: linear-gradient(135deg, #ff0055, #ff416c);
             color: #fff;
         }
 
+        /* 2. THE DEEP SEA */
         .card-deep-sea {
             background: linear-gradient(180deg, #95d5e2 0%, #1e5a7e 100%);
             color: #ffffff;
         }
 
+        /* 3. THE SIZE OF SPACE */
         .card-space {
             background: #020208;
             color: #ffffff;
         }
 
+        /* 4. SHARE THIS PAGE */
         .card-share {
             background: repeating-linear-gradient(
                 45deg,
@@ -122,39 +132,47 @@
             );
         }
 
+        /* 5. DARK PATTERNS */
         .card-dark-patterns {
             background: #080808;
             color: #ff3344;
         }
 
+        /* 6. WHO WAS ALIVE? */
         .card-who-alive {
             background: #e6e0d3;
         }
 
+        /* 7. WHERE DOES THE DAY GO? */
         .card-day-go {
             background: linear-gradient(90deg, #5aeec8, #9ca1ff, #ffe391);
         }
 
+        /* 8. LIFE CHECKLIST */
         .card-checklist {
             background: #abf1cf;
         }
 
+        /* 9. SPEED */
         .card-speed {
             background: #f1f3f5;
             background-image: linear-gradient(0deg, #e2e8f0 2px, transparent 2px);
             background-size: 100% 12px;
         }
 
+        /* 10. PAPER */
         .card-paper {
             background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
         }
 
+        /* 11. DRAW LOGOS */
         .card-draw-logos {
             background: #f8fafc;
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             color: #111;
         }
 
+        /* 12. PROGRESS */
         .card-progress {
             background: #ffffff;
             position: relative;
@@ -176,14 +194,17 @@
             background: #20c997;
         }
 
+        /* 13. SPEND BILL GATES' MONEY */
         .card-gates {
             background: #22c55e;
             color: #ffffff;
         }
 
+        /* 14. BABY MAP */
         .card-baby-map {
             background: #e0f2fe;
         }
+
     </style>
 </head>
 <body>
@@ -195,13 +216,15 @@
 
     <main class="grid-container">
 
-        <!-- 1. Sly Clicker (WORKING LINK) -->
-        <a href="games/sly-clicker.html" class="card card-sly">
+        <!-- 1. Sly Clicker (ACTIVE) -->
+        <a href="sly-clicker.html" class="card card-sly">
             <div class="card-text-title">SLY CLICKER</div>
         </a>
 
-        <!-- 2. The Deep Sea -->
-       <a href="games/deep-sea.html" class="card card-deep-sea">
+        <!-- 2. The Deep Sea (ACTIVE) -->
+        <a href="deep-sea.html" class="card card-deep-sea">
+            <div class="card-text-title">The Deep Sea</div>
+        </a>
 
         <!-- 3. The Size of Space -->
         <a onclick="alert('This game is under construction!')" class="card card-space">
@@ -243,8 +266,10 @@
             <div class="card-text-title" style="font-size:2.2rem; color:#1e293b;">Paper</div>
         </a>
 
-        <!-- 11. Draw Logos -->
-      <a href="games/draw-logos.html" class="card card-draw-logos">
+        <!-- 11. Draw Logos (ACTIVE) -->
+        <a href="draw-logos.html" class="card card-draw-logos">
+            <div class="card-text-title" style="font-size: 1.5rem;">〽️ DRAW LOGOS<br>FROM MEMORY</div>
+        </a>
 
         <!-- 12. Progress -->
         <a onclick="alert('This game is under construction!')" class="card card-progress">
@@ -256,8 +281,10 @@
             <div class="card-label">Progress</div>
         </a>
 
-        <!-- 13. Spend Bill Gates' Money -->
-        <a href="games/spend-bill-gates-money.html" class="card card-gates">
+        <!-- 13. Spend Bill Gates' Money (ACTIVE) -->
+        <a href="spend-bill-gates-money.html" class="card card-gates">
+            <div class="card-text-title" style="font-size: 1.4rem;">💸 SPEND BILL<br>GATES' MONEY</div>
+        </a>
 
         <!-- 14. Baby Map -->
         <a onclick="alert('This game is under construction!')" class="card card-baby-map">
