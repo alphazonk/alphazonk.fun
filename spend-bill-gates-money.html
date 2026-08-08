@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend Bill Gates' Money - AlphaZonk.fun</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 60px;
+        }
+
+        /* HEADER & AVATAR */
+        header {
+            margin: 30px 0 20px 0;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            margin: 0 auto 15px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        /* MONEY COUNTER BAR (STICKY) */
+        .money-bar {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            width: 100%;
+            padding: 18px;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            letter-spacing: -0.5px;
+        }
+
+        /* ITEMS GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            width: 90%;
+            margin-top: 30px;
+        }
+
+        .item-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+
+        .item-icon {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .item-cost {
+            font-size: 1.1rem;
+            color: #22c55e;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .btn-sell {
+            background: #f1f3f5;
+            color: #333;
+        }
+
+        .btn-sell:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .btn-buy:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .item-qty {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .back-btn:hover {
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="avatar">👓</div>
+        <h1>Spend Bill Gates' Money</h1>
+        <a href="index.html" class="back-btn">← Back to AlphaZonk.fun</a>
+    </header>
+
+    <div class="money-bar" id="money-display">$100,000,000,000</div>
+
+    <div class="grid" id="items-grid"></div>
+
+    <script>
+        let money = 100000000000;
+
+        const items = [
+            { name: "Big Mac", cost: 5, icon: "🍔", count: 0 },
+            { name: "Flip Flops", cost: 12, icon: "🩴", count: 0 },
+            { name: "Book", cost: 15, icon: "📖", count: 0 },
+            { name: "Video Game", cost: 60, icon: "🎮", count: 0 },
+            { name: "Air Jordans", cost: 200, icon: "👟", count: 0 },
+            { name: "AirPods", cost: 250, icon: "🎧", count: 0 },
+            { name: "Gaming PC", cost: 2000, icon: "🖥️", count: 0 },
+            { name: "Jet Ski", cost: 10000, icon: "🌊", count: 0 },
+            { name: "Rolex", cost: 15000, icon: "⌚", count: 0 },
+            { name: "Tesla", cost: 75000, icon: "🚗", count: 0 },
+            { name: "Monster Truck", cost: 150000, icon: "🛻", count: 0 },
+            { name: "Ferrari", cost: 250000, icon: "🏎️", count: 0 },
+            { name: "McDonalds Franchise", cost: 1500000, icon: "🍟", count: 0 },
+            { name: "Yacht", cost: 7500000, icon: "🛥️", count: 0 },
+            { name: "M1 Abrams Tank", cost: 8000000, icon: "🎖️", count: 0 },
+            { name: "Apache Helicopter", cost: 31000000, icon: "🚁", count: 0 },
+            { name: "Mansion", cost: 45000000, icon: "🏰", count: 0 },
+            { name: "Mona Lisa", cost: 860000000, icon: "🖼️", count: 0 },
+            { name: "Boeing 747", cost: 148000000, icon: "✈️", count: 0 },
+            { name: "NBA Team", cost: 3000000000, icon: "🏀", count: 0 }
+        ];
+
+        const grid = document.getElementById('items-grid');
+        const moneyDisplay = document.getElementById('money-display');
+
+        function formatMoney(amount) {
+            return '$' + amount.toLocaleString();
+        }
+
+        function render() {
+            moneyDisplay.innerText = formatMoney(money);
+            grid.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+
+                card.innerHTML = `
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-cost">${formatMoney(item.cost)}</div>
+                    <div class="controls">
+                        <button class="btn btn-sell" ${item.count === 0 ? 'disabled' : ''} onclick="sell(${index})">Sell</button>
+                        <input type="text" class="item-qty" value="${item.count}" readonly>
+                        <button class="btn btn-buy" ${money < item.cost ? 'disabled' : ''} onclick="buy(${index})">Buy</button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function buy(index) {
+            if (money >= items[index].cost) {
+                money -= items[index].cost;
+                items[index].count++;
+                render();
+            }
+        }
+
+        function sell(index) {
+            if (items[index].count > 0) {
+                money += items[index].cost;
+                items[index].count--;
+                render();
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
