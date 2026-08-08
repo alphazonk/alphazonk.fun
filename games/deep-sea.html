@@ -21,7 +21,7 @@
                 #052238 45%, 
                 #020b14 75%, 
                 #000000 100%);
-            min-height: 12000px; /* Expands height for smooth spacing */
+            min-height: 12000px;
         }
 
         /* STICKY HUD */
@@ -161,7 +161,8 @@
 </head>
 <body>
 
-    <a href="../index.html" class="back-btn">← Home</a>
+    <!-- FIXED HOME BUTTON LINK -->
+    <a href="../" class="back-btn">← Home</a>
     <div class="hud" id="depthHud">0 meters</div>
 
     <div class="hero">
@@ -194,12 +195,9 @@
         const container = document.getElementById('seaContainer');
         const hud = document.getElementById('depthHud');
 
-        // Render entities cleanly with padded Y positions
         function renderEntities() {
             seaData.forEach((item, index) => {
                 const el = document.createElement('div');
-                
-                // Fixed minimum pixel gap between each card so they NEVER overlap!
                 const topPos = index * 420; 
                 const side = index % 2 === 0 ? 'left' : 'right';
 
@@ -219,7 +217,6 @@
             });
         }
 
-        // SMOOTH SCROLL DEPTH CALCULATION
         window.addEventListener('scroll', () => {
             const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
             const maxDepth = 10900;
