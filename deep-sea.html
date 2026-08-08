@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Deep Sea - AlphaZonk.fun</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            background: linear-gradient(180deg, 
+                #62c1e5 0%, 
+                #238ab2 10%, 
+                #0f4c75 25%, 
+                #052238 50%, 
+                #020b14 80%, 
+                #000000 100%);
+            min-height: 10000px; /* Long scroll canvas */
+        }
+
+        /* STICKY DEPTH HUD */
+        .hud {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            letter-spacing: -0.5px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            z-index: 1000;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* HERO HEADER */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .scroll-down {
+            margin-top: 40px;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-7px); }
+        }
+
+        /* SEA ENTITIES CONTAINER */
+        .sea-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .entity {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 24px;
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+            transition: transform 0.3s ease;
+        }
+
+        .entity.left { left: 5%; }
+        .entity.right { right: 5%; }
+
+        .entity-icon {
+            font-size: 3rem;
+        }
+
+        .entity-info h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .entity-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .depth-badge {
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← Home</a>
+    <div class="hud" id="depthHud">0 meters</div>
+
+    <div class="hero">
+        <h1>The Deep Sea</h1>
+        <p>Scroll down to dive into the abyss</p>
+        <div class="scroll-down">↓</div>
+    </div>
+
+    <div class="sea-container" id="seaContainer"></div>
+
+    <script>
+        // Array of ocean discoveries mapped to depth (in meters)
+        const seaData = [
+            { depth: 10, name: "Clownfish", icon: "🐠", desc: "Lives in sea anemones in warm, shallow waters." },
+            { depth: 25, name: "Sea Turtle", icon: "🐢", desc: "Can hold its breath underwater for up to 5 hours." },
+            { depth: 50, name: "Dolphin", icon: "🐬", desc: "Dives deep to hunt fish and squid using echolocation." },
+            { depth: 100, name: "Great White Shark", icon: "🦈", desc: "Prowls the sunlit zone down to 200m." },
+            { depth: 200, name: "Twilight Zone Begins", icon: "🌌", desc: "Sunlight rapidly fades away past this point." },
+            { depth: 300, name: "Giant Isopod", icon: "🪲", desc: "Scavenges the ocean floor for falling organic debris." },
+            { depth: 500, name: "Emperor Penguin", icon: "🐧", desc: "Deepest diving bird on record." },
+            { depth: 700, name: "American Lobster", icon: "🦞", desc: "Lives in muddy ocean bottoms." },
+            { depth: 1000, name: "Midnight Zone", icon: "🖤", desc: "Complete pitch blackness. Sunlight cannot reach here." },
+            { depth: 1200, name: "Sperm Whale", icon: "🐳", desc: "Dives over 1,000 meters to hunt Giant Squid." },
+            { depth: 2000, name: "Anglerfish", icon: "🎣", desc: "Uses a glowing bioluminescent lure to catch prey in total dark." },
+            { depth: 3000, name: "Abyssal Zone", icon: "🌊", desc: "Near-freezing temperatures and crushing pressure." },
+            { depth: 3800, name: "Wreck of the Titanic", icon: "🚢", desc: "Rests at the bottom of the North Atlantic Ocean." },
+            { depth: 6000, name: "Hadal Zone", icon: "🕳️", desc: "Deep ocean trenches formed by tectonic plates." },
+            { depth: 10900, name: "Challenger Deep", icon: "🌋", desc: "The deepest known point in the Earth's oceans!" }
+        ];
+
+        const container = document.getElementById('seaContainer');
+        const hud = document.getElementById('depthHud');
+
+        // Total scrollable height mapping
+        const maxDepthMeters = 11000;
+
+        function renderEntities() {
+            seaData.forEach((item, index) => {
+                const el = document.createElement('div');
+                // Calculate vertical placement percentage based on depth
+                const topPos = (item.depth / maxDepthMeters) * 9000 + 100; 
+                const side = index % 2 === 0 ? 'left' : 'right';
+
+                el.className = `entity ${side}`;
+                el.style.top = `${topPos}px`;
+
+                el.innerHTML = `
+                    <div class="entity-icon">${item.icon}</div>
+                    <div class="entity-info">
+                        <span class="depth-badge">${item.depth.toLocaleString()}m</span>
+                        <h3>${item.name}</h3>
+                        <p>${item.desc}</p>
+                    </div>
+                `;
+
+                container.appendChild(el);
+            });
+        }
+
+        // UPDATE DEPTH ON SCROLL
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            const currentDepth = Math.min(Math.round(scrollPercent * maxDepthMeters), maxDepthMeters);
+            hud.innerText = `${currentDepth.toLocaleString()} meters`;
+        });
+
+        renderEntities();
+    </script>
+</body>
+</html>
